@@ -54,7 +54,7 @@ router.get("/seed", (req, res) => {
 // 1 index route - get - /fruits
 router.get("/", (req, res) => {
     //find all the fruits
-    Fruit.find({})
+    Fruit.find({username: req.session.username})
     .then((fruits) => {
         // render the index template with the fruits
         res.render("fruits/index.liquid", {fruits})
@@ -75,6 +75,9 @@ router.post("/", (req, res) => {
 
     // convert the checkbox property to true or false
     req.body.readyToEat = req.body.readyToEat === "on" ? true : false
+
+     // add the username to req.body, to track user
+     req.body.username = req.session.username
 
     // create the new fruit
     Fruit.create(req.body)
